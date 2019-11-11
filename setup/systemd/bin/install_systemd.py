@@ -22,11 +22,8 @@ from shutil import copyfile
 
 # Try to create a working PYTHONPATH
 _EXEC_DIR = os.path.dirname(os.path.realpath(__file__))
-ROOT_DIR = os.path.abspath(os.path.join(os.path.abspath(
-    os.path.join(os.path.abspath(os.path.join(os.path.abspath(
-        os.path.join(
-            _EXEC_DIR, os.pardir)), os.pardir)), os.pardir)), os.pardir))
 if _EXEC_DIR.endswith('/pattoo/setup/systemd/bin') is True:
+    ROOT_DIR = re.sub('/pattoo/setup/systemd/bin', '', _EXEC_DIR)
     sys.path.append(ROOT_DIR)
 else:
     print('''\
@@ -167,7 +164,7 @@ def _update_environment_strings(filepaths, config_dir):
 
     """
     # Initialize key variables
-    global BINDIR
+    global BIN_DIR
     env_path = '^Environment="PATTOO_CONFIGDIR=(.*?)"$'
     env_bin = '^Environment="BIN_DIR=(.*?)"$'
 
