@@ -167,6 +167,7 @@ def _update_environment_strings(filepaths, config_dir):
     global BIN_DIR
     env_path = '^Environment="PATTOO_CONFIGDIR=(.*?)"$'
     env_bin = '^Environment="BIN_DIR=(.*?)"$'
+    bin_var = '$BIN_DIR'
 
     # Do the needful
     for filepath in filepaths:
@@ -187,6 +188,8 @@ def _update_environment_strings(filepaths, config_dir):
                 if bool(re.search(env_path, line)) is True:
                     _line = 'Environment="PATTOO_CONFIGDIR={}"'.format(
                         config_dir)
+                if re.search(bin_var):
+                    _line = re.sub(bin_var, BIN_DIR, _line)
 
                 lines.append(_line)
                 line = _fp.readline()
