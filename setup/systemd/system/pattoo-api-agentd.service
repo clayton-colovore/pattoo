@@ -6,9 +6,9 @@ After=network.target
 [Service]
 Environment="PATTOO_CONFIGDIR=x"
 Environment="BIN_DIR=x"
-ExecStart=$BIN_DIR/pattoo-api-agentd --start
-ExecStop=$BIN_DIR/pattoo-api-agentd --stop
-ExecReload=$BIN_DIR/pattoo-api-agentd --restart
+ExecStart=/bin/python3 $BIN_DIR/pattoo-api-agentd.py --start
+ExecStop=/bin/python3 $BIN_DIR/pattoo-api-agentd --stop
+ExecReload=/bin/python3 $BIN_DIR/pattoo-api-agentd --restart
 
 [Install]
 WantedBy=multi-user.target
