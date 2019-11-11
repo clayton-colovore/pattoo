@@ -23,7 +23,7 @@ from shutil import copyfile
 # Try to create a working PYTHONPATH
 _EXEC_DIR = os.path.dirname(os.path.realpath(__file__))
 if _EXEC_DIR.endswith('/pattoo/setup/systemd/bin') is True:
-    ROOT_DIR = re.sub('/pattoo/setup/systemd/bin', '', _EXEC_DIR)
+    ROOT_DIR = re.sub('/setup/systemd/bin', '', _EXEC_DIR)
     sys.path.append(ROOT_DIR)
 else:
     print('''\
