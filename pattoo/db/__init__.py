@@ -8,12 +8,13 @@ Manages connection pooling among other things.
 # Main python libraries
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import event
 from sqlalchemy import exc
+from sqlalchemy.pool import QueuePool, Pool
 
 # pattoo libraries
-from pattoo_shared import log 
+from pattoo_shared import log
 from pattoo import configuration
 
 #############################################################################
@@ -21,8 +22,6 @@ from pattoo import configuration
 #############################################################################
 POOL = None
 URL = None
-TEST_ENGINE = None
-
 
 def main():
     """Process agent data.
@@ -38,7 +37,8 @@ def main():
     use_mysql = True
     global POOL
     global URL
-    global TEST_ENGINE
+    pool_timeout = 30
+    pool_recycle = min(10, pool_timeout - 10)
 
     # Get configuration
     config = configuration.Config()
@@ -57,24 +57,27 @@ def main():
         db_engine = create_engine(
             URL, echo=False,
             encoding='utf8',
+            poolclass=QueuePool,
             max_overflow=max_overflow,
-            pool_size=pool_size, pool_recycle=600)
+            pool_size=pool_size,
+            pool_pre_ping=True,
+            pool_recycle=pool_recycle,
+            pool_timeout=pool_timeout)
 
         # Fix for multiprocessing
         _add_engine_pidguard(db_engine)
 
-        POOL = sessionmaker(
-            autoflush=True,
-            autocommit=False,
-            bind=db_engine
+        # Create database session object
+        POOL = scoped_session(
+            sessionmaker(
+                autoflush=True,
+                autocommit=False,
+                bind=db_engine
+            )
         )
 
     else:
         POOL = None
-
-    # Populate the test engine if this is a test database
-    if config.db_name().startswith('test_') is True:
-        TEST_ENGINE = db_engine
 
 
 def _add_engine_pidguard(engine):

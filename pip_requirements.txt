@@ -4,12 +4,20 @@
 
 # Pattoo packages
 
-PattooShared>=0.0.8
+PattooShared>=0.0.27
 
 # Miscellaneous packages
-
-Flask
-gunicorn
 PyYAML
-pymysql
-sqlalchemy
+
+# Database packages
+PyMySQL
+SQLAlchemy
+
+# Web server packages
+Flask
+Flask-GraphQL
+gunicorn
+
+# GraphQL packages
+graphene
+graphene-sqlalchemy
