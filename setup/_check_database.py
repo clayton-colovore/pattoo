@@ -25,7 +25,7 @@ else:
 
 
 # Pattoo libraries
-from pattoo_shared import log
+from PattooShared import log
 from pattoo import configuration
 from pattoo.db import URL
 from pattoo.db.orm import BASE

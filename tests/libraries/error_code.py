@@ -10,7 +10,7 @@ import collections
 
 
 # Import pattoo libraries
-from pattoo_shared import log
+from PattooShared import log
 
 
 def check(root):

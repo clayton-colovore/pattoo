@@ -6,7 +6,7 @@
 from sqlalchemy import and_
 
 # pattoo libraries
-from pattoo_shared import log
+from PattooShared import log
 from pattoo.db import POOL 
 from pattoo.db.orm import Agent
 

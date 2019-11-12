@@ -33,7 +33,7 @@ Please fix.''')
 # pattoo libraries
 from tests.libraries import error_code
 from tests.libraries.configuration import UnittestConfig
-from pattoo_shared import files
+from PattooShared import files
 
 
 def main():

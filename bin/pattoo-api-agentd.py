@@ -21,11 +21,11 @@ else:
     sys.exit(2)
 
 # Pattoo libraries
-from pattoo_shared.constants import (
+from PattooShared.constants import (
     PATTOO_API_AGENT_EXECUTABLE, PATTOO_API_AGENT_GUNICORN_AGENT)
-from pattoo_shared.variables import AgentAPIVariable
-from pattoo_shared.agent import Agent, AgentCLI, AgentAPI
-from pattoo_shared.configuration import Config
+from PattooShared.variables import AgentAPIVariable
+from PattooShared.agent import Agent, AgentCLI, AgentAPI
+from PattooShared.configuration import Config
 from pattoo.api.agents import PATTOO_API_AGENT
 
 

@@ -19,8 +19,8 @@ else:
 
 
 # Pattoo imports
-from pattoo_shared import files
-from pattoo_shared import log
+from PattooShared import files
+from PattooShared import log
 
 
 def check():

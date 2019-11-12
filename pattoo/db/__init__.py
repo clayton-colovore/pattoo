@@ -13,7 +13,7 @@ from sqlalchemy import event
 from sqlalchemy import exc
 
 # pattoo libraries
-from pattoo_shared import log 
+from PattooShared import log 
 from pattoo import configuration
 
 #############################################################################
