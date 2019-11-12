@@ -22,11 +22,11 @@ else:
     sys.exit(2)
 
 # Pattoo libraries
-from PattooShared.constants import PATTOO_API_AGENT_EXECUTABLE
-from PattooShared.configuration import Config
-from PattooShared import files
-from PattooShared import converter
-from PattooShared.variables import AgentPolledData
+from pattoo_shared.constants import PATTOO_API_AGENT_EXECUTABLE
+from pattoo_shared.configuration import Config
+from pattoo_shared import files
+from pattoo_shared import converter
+from pattoo_shared.variables import AgentPolledData
 
 
 def main():

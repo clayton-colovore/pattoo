@@ -8,9 +8,9 @@ import json
 from flask import Blueprint, request, abort
 
 # pattoo imports
-from PattooShared import data
-from PattooShared.constants import PATTOO_API_AGENT_EXECUTABLE
-from PattooShared import configuration
+from pattoo_shared import data
+from pattoo_shared.constants import PATTOO_API_AGENT_EXECUTABLE
+from pattoo_shared import configuration
 
 
 # Define the POST global variable

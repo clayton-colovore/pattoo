@@ -4,7 +4,7 @@
 from flask import Flask
 
 # Define the global URL prefix
-from PattooShared.constants import PATTOO_API_AGENT_PREFIX
+from pattoo_shared.constants import PATTOO_API_AGENT_PREFIX
 
 # Import PATTOO_API_AGENT Blueprints
 from pattoo.api.agents.post import POST

@@ -15,7 +15,7 @@ import os
 import yaml
 
 # Pattoo imports
-from PattooShared import log
+from pattoo_shared import log
 
 
 class UnittestConfig(object):

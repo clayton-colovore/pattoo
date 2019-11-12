@@ -2,8 +2,8 @@
 """Pattoo classes that manage various configurations."""
 
 # Import project libraries
-from PattooShared import configuration
-from PattooShared.configuration import Config as ConfigShared
+from pattoo_shared import configuration
+from pattoo_shared.configuration import Config as ConfigShared
 
 
 class Config(ConfigShared):
