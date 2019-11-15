@@ -128,11 +128,11 @@ This can be adjusted on the CLI.'''.format(max_duration))
     # Print result
     stop = int(time.time())
     duration = stop - start
-    if bool(records) is True:
+    if bool(records) is True and bool(duration) is True:
         log_message = ('''\
-Agent cache ingest completed. {1} records processed in {2} seconds, {3:.2f} \
-records / second. {4} files read. Script {0}.\
-'''.format(script, records, duration, records / duration, files_read))
+Agent cache ingest completed. {0} records processed in {1} seconds, {2:.2f} \
+records / second. {3} files read. \
+'''.format(records, duration, records / duration, files_read))
         log.log2info(21004, log_message)
     else:
         log_message = 'No files found to ingest'
@@ -215,8 +215,9 @@ def lock(delete=False):
     if bool(delete) is False:
         if os.path.exists(lockfile) is True:
             log_message = ('''\
-Lockfile {} exists. Will not start script {}. Is another instance running?\
-'''.format(lockfile, os.path.realpath(__file__)))
+Lockfile {} exists. Will not start ingester script. Is another Ingester \
+instance running? If not, delete the lockfile and rerun this script.\
+'''.format(lockfile))
             log.log2die(20023, log_message)
         else:
             open(lockfile, 'a').close()
@@ -248,11 +249,11 @@ Program to ingest cached agent data from the {} directory into the database.\
 
     parser.add_argument(
         '-b', '--batch_size',
-        default=10,
+        default=500,
         type=int,
         help='''\
 The number of files to process at a time. Smaller batch sizes may help when \
-you are memory or database connection constrained. Default=10''')
+you are memory or database connection constrained. Default=500''')
 
     parser.add_argument(
         '-d', '--duration',
