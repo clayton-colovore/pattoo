@@ -46,12 +46,12 @@ class TestBasicFunctioins(unittest.TestCase):
         # Create a PattooDBrecord
         record = PattooDBrecord(
             checksum='1',
-            data_index='2',
-            data_label='3',
-            data_source=4,
-            data_timestamp=5,
+            key='3',
+            source=4,
+            polling_interval=1,
+            timestamp=5,
             data_type=DATA_FLOAT,
-            data_value=6,
+            value=6,
             metadata=[pair1, pair2]
         )
 
@@ -71,18 +71,17 @@ class TestBasicFunctioins(unittest.TestCase):
         # Create a PattooDBrecord
         record = PattooDBrecord(
             checksum='1',
-            data_index='2',
-            data_label='3',
-            data_source=4,
-            data_timestamp=5,
+            key='3',
+            polling_interval=1,
+            source=4,
+            timestamp=5,
             data_type=DATA_FLOAT,
-            data_value=6,
+            value=6,
             metadata=[('key1', 'value'), ('key2', 'value')])
 
         # Test
         expected = [
-            ('data_index', '2'), ('data_label', '3'), ('data_source', '4'),
-            ('data_type', '101'), ('key1', 'value'), ('key2', 'value')
+            ('key', '3'), ('key1', 'value'), ('key2', 'value'), ('source', '4')
         ]
         result = get.key_value_pairs(record)
         self.assertEqual(sorted(result), expected)
@@ -95,15 +94,16 @@ class TestBasicFunctioins(unittest.TestCase):
         """Testing method / function idx_checksum."""
         # Initialize key variables
         checksum = data.hashstring(str(random()))
+        polling_interval = 1
         self.assertFalse(exists.checksum(checksum))
 
         # Test creation
-        result = get.idx_checksum(checksum, DATA_FLOAT)
+        result = get.idx_checksum(checksum, DATA_FLOAT, polling_interval)
         expected = exists.checksum(checksum)
         self.assertEqual(result, expected)
 
         # Test after creation
-        result = get.idx_checksum(checksum, DATA_FLOAT)
+        result = get.idx_checksum(checksum, DATA_FLOAT, polling_interval)
         expected = exists.checksum(checksum)
         self.assertEqual(result, expected)
 
