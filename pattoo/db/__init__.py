@@ -15,13 +15,14 @@ from sqlalchemy.pool import QueuePool, Pool
 
 # pattoo libraries
 from pattoo_shared import log
-from pattoo import configuration
+from pattoo.configuration import ConfigPattoo as Config
 
 #############################################################################
 # Setup a global pool for database connections
 #############################################################################
 POOL = None
 URL = None
+
 
 def main():
     """Process agent data.
@@ -41,7 +42,7 @@ def main():
     pool_recycle = min(10, pool_timeout - 10)
 
     # Get configuration
-    config = configuration.Config()
+    config = Config()
 
     # Define SQLAlchemy parameters from configuration
     pool_size = config.db_pool_size()
@@ -139,7 +140,7 @@ def _add_engine_pidguard(engine):
 Parent process {} forked ({}) with an open database connection, \
 which is being discarded and recreated.\
 '''.format(connection_record.info['pid'], pid))
-            log.log2debug(21027, log_message)
+            log.log2debug(20073, log_message)
 
             connection_record.connection = connection_proxy.connection = None
             raise exc.DisconnectionError('''\

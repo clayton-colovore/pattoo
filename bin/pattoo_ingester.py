@@ -28,7 +28,7 @@ from pattoo_shared import files
 from pattoo_shared import daemon
 from pattoo_shared import log
 from pattoo_shared import converter
-from pattoo_shared.constants import PATTOO_API_AGENT_EXECUTABLE
+from pattoo.constants import PATTOO_API_AGENT_NAME
 
 from pattoo.ingest import data
 
@@ -62,7 +62,7 @@ def main():
 
     # Get cache directory
     config = Config()
-    directory = config.agent_cache_directory(PATTOO_API_AGENT_EXECUTABLE)
+    directory = config.agent_cache_directory(PATTOO_API_AGENT_NAME)
 
     # Get the CLI arguments
     args = arguments(config)
@@ -71,7 +71,7 @@ def main():
 
     # Log what we are doing
     log_message = 'Running script {}.'.format(script)
-    log.log2info(21003, log_message)
+    log.log2info(20085, log_message)
 
     # Get the number of files in the directory
     files_found = len(
@@ -113,7 +113,7 @@ This can be adjusted on the CLI.'''.format(max_duration))
         files_to_process = len(os.listdir(directory))
         log_message = 'Processing {} of {} cache files.'.format(
             min(files_per_batch, files_to_process), files_to_process)
-        log.log2info(21009, log_message)
+        log.log2info(20083, log_message)
 
         # Process the data
         count = process(directory_data)
@@ -131,7 +131,7 @@ This can be adjusted on the CLI.'''.format(max_duration))
 Agent cache ingest completed. {0} records processed in {1} seconds, {2:.2f} \
 records / second. {3} files read. \
 '''.format(records, duration, records / duration, files_read))
-        log.log2info(21004, log_message)
+        log.log2info(20084, log_message)
     else:
         log_message = 'No files found to ingest'
         log.log2info(20021, log_message)
@@ -167,14 +167,17 @@ def process(directory_data):
         if bool(json_data) is True and isinstance(json_data, dict) is True:
             keypairs = converter.cache_to_keypairs(json_data)
             if bool(keypairs) is False:
+                log_message = ('''\
+File {} has invalid data. It will not be processed'''.format(filepath))
+                log.log2info(20026, log_message)
                 continue
 
             count += len(keypairs)
-            source = keypairs[0].source
-            if source in _cache:
-                _cache[source].extend(keypairs)
+            pattoo_agent_id = keypairs[0].pattoo_agent_id
+            if pattoo_agent_id in _cache:
+                _cache[pattoo_agent_id].extend(keypairs)
             else:
-                _cache[source] = keypairs
+                _cache[pattoo_agent_id] = keypairs
 
     # Multiprocess the data
     if bool(_cache) is True:
@@ -182,7 +185,7 @@ def process(directory_data):
             muliprocessing_data.append(item)
         data.mulitiprocess(muliprocessing_data)
 
-    # Delete source files after processing
+    # Delete cache files after processing
     for filepath in filepaths:
         log_message = 'Deleting cache file {}'.format(filepath)
         log.log2debug(20009, log_message)
@@ -204,8 +207,9 @@ def lock(delete=False):
 
     """
     # Initialize key variables
-    agent_name = 'pattoo-ingester'
-    lockfile = daemon.lock_file(agent_name)
+    agent_name = 'pattoo_ingester'
+    config = Config()
+    lockfile = files.lock_file(agent_name, config)
 
     # Lock
     if bool(delete) is False:
@@ -234,7 +238,7 @@ def arguments(config):
 
     """
     # Get cache directory
-    directory = config.agent_cache_directory(PATTOO_API_AGENT_EXECUTABLE)
+    directory = config.agent_cache_directory(PATTOO_API_AGENT_NAME)
 
     # Get arguments
     parser = argparse.ArgumentParser(
@@ -265,4 +269,5 @@ of not keeping up with the cache data updates. Default=3600''')
 
 
 if __name__ == '__main__':
+    log.env()
     main()

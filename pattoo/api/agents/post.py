@@ -4,14 +4,16 @@
 import os
 import json
 import sys
+from random import randrange
 
 # Flask imports
 from flask import Blueprint, request, abort
 
 # pattoo imports
 from pattoo_shared import log
-from pattoo_shared.constants import PATTOO_API_AGENT_EXECUTABLE, CACHE_KEYS
+from pattoo_shared.constants import CACHE_KEYS
 from pattoo_shared import configuration
+from pattoo.constants import PATTOO_API_AGENT_NAME
 
 
 # Define the POST global variable
@@ -34,7 +36,7 @@ def receive(source):
 
     # Read configuration
     config = configuration.Config()
-    cache_dir = config.agent_cache_directory(PATTOO_API_AGENT_EXECUTABLE)
+    cache_dir = config.agent_cache_directory(PATTOO_API_AGENT_NAME)
 
     # Get JSON from incoming agent POST
     try:
@@ -49,7 +51,8 @@ def receive(source):
         log.log2warning(20024, log_message)
         abort(404)
     if len(posted_data) != len(CACHE_KEYS):
-        log_message = '{} Incorrect length'.format(prefix)
+        log_message = ('''\
+{} Incorrect length. Expected length of {}'''.format(prefix, len(CACHE_KEYS)))
         log.log2warning(20019, log_message)
         abort(404)
     for key in posted_data.keys():
@@ -60,14 +63,19 @@ def receive(source):
 
     # Extract key values from posting
     try:
-        timestamp = int(posted_data['datapoints'][0]['timestamp'])
+        timestamp = posted_data['pattoo_agent_timestamp']
     except:
+        log_message = ('''API Failure: [{}, {}, {}]\
+'''.format(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]))
+        log.log2warning(20025, log_message)
         abort(404)
 
-    # Create a hash of the agent_hostname
+    # Create filename. Add a suffix in the event the source is posting
+    # frequently.
+    suffix = str(randrange(100000)).zfill(6)
     json_path = (
-        '{}{}{}_{}.json'.format(
-            cache_dir, os.sep, timestamp, source))
+        '{}{}{}_{}_{}.json'.format(
+            cache_dir, os.sep, timestamp, source, suffix))
 
     # Create cache file
     try:
@@ -85,3 +93,18 @@ def receive(source):
 
     # Return
     return 'OK'
+
+
+@POST.route('/status')
+def index():
+    """Provide the status page.
+
+    Args:
+        None
+
+    Returns:
+        Home Page
+
+    """
+    # Return
+    return 'The Pattoo Agent API is Operational.\n'

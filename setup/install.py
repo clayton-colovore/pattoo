@@ -151,7 +151,7 @@ def _run_script(cli_string, die=True):
     string2print = 'Running Command: "{}"'.format(cli_string)
     print(string2print)
 
-    # Run update_devices script
+    # Run update_targets script
     do_command_list = list(cli_string.split(' '))
 
     # Create the subprocess object
@@ -212,7 +212,7 @@ def next_steps():
 Hooray successful installation! Panna Cotta Time!
 
 Next Steps:
-    1) Start the 'bin/pattoo-api-agentd.py' script to accept agent data.
+    1) Start the 'bin/pattoo_api_agentd.py' script to accept agent data.
     2) Configure your agents to post data to this server.
 
 Other steps:

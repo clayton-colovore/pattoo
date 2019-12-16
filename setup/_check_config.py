@@ -43,28 +43,29 @@ def check():
     config = files.read_yaml_files(config_directory)
 
     # Check main keys
-    keys = ['main', 'db', 'pattoo-api-agentd']
+    keys = ['main', 'db', 'pattoo_api_agentd']
     for key in keys:
         if key not in config:
             log_message = ('''\
 Section "{}" not found in configuration file in directory {}. Please fix.\
 '''.format(key, config_directory))
-            log.log2die_safe(21000, log_message)
+            log.log2die_safe(20090, log_message)
 
     # Check secondary keys
     secondaries = [
-        'log_level', 'log_directory', 'cache_directory',
-        'daemon_directory', 'polling_interval']
+        'log_level', 'log_directory', 'cache_directory', 'daemon_directory']
     secondary_key_check(config, 'main', secondaries)
     secondaries = [
         'db_pool_size', 'db_max_overflow', 'db_hostname', 'db_username',
         'db_password', 'db_name']
     secondary_key_check(config, 'db', secondaries)
-    secondaries = ['api_ip_address', 'api_ip_bind_port', 'api_uses_https']
-    secondary_key_check(config, 'pattoo-api-agentd', secondaries)
+    secondaries = ['ip_listen_address', 'ip_bind_port']
+    secondary_key_check(config, 'pattoo_api_agentd', secondaries)
+    secondaries = ['ip_listen_address', 'ip_bind_port']
+    secondary_key_check(config, 'pattoo_apid', secondaries)
 
     # Print Status
-    print('OK: Configuration paramter check passed.')
+    print('OK: Configuration parameter check passed.')
 
 
 def secondary_key_check(config, primary, secondaries):
@@ -85,7 +86,7 @@ def secondary_key_check(config, primary, secondaries):
             log_message = ('''\
 Configuration file's "{}" section does not have a "{}" sub-section. \
 Please fix.'''.format(primary, key))
-            log.log2die_safe(21001, log_message)
+            log.log2die_safe(20091, log_message)
 
 
 def main():

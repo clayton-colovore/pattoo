@@ -56,45 +56,17 @@ class UnittestConfig(object):
                 'db_password': 'K2nJ8kFdthEbuwXE',
                 'db_name': 'pattoo_unittest'
             },
-            'pattoo-api-agentd': {
-                'api_ip_address': '127.0.0.1',
-                'api_ip_bind_port': 6060,
-                'api_uses_https': False
+            'pattoo_api_agentd': {
+                'ip_listen_address': '127.0.0.2',
+                'ip_bind_port': 40201,
             },
-            'pattoo-agent-snmpd': {
-                'oid_groups': [
-                    {
-                        'group_name': 'TEST',
-                        'ip_devices': ['localhost'],
-                        'oids': ['.1.3.6.1.2.1.2.2.1.10',
-                                 '.1.3.6.1.2.1.2.2.1.16']
-                    }
-                ],
-                'snmp_groups': [
-                    {
-                        'group_name': 'TEST',
-                        'snmp_authpassword': None,
-                        'snmp_authprotocol': None,
-                        'snmp_community': 'public',
-                        'snmp_port': 161,
-                        'snmp_privpassword': None,
-                        'snmp_privprotocol': None,
-                        'snmp_secname': None,
-                        'snmp_version': 2,
-                        'ip_devices': ['localhost']
-                    }
-                ]
+            'pattoo_apid': {
+                'ip_listen_address': '127.0.0.3',
+                'ip_bind_port': 40202,
             },
-            'pattoo-agent-os-spoked': {
-                'listen_address': '127.0.0.1',
-                'ip_bind_port': 5000
-                },
-            'pattoo-agent-os-hubd': {
-
-                'ip_devices': [
-                    {'ip_address': '127.0.0.1',
-                     'ip_bind_port': 5000}]
-                }
+            'pattoo_ingesterd': {
+                'ingester_interval': 45
+            },
         }
 
     def create(self):
@@ -175,11 +147,11 @@ Then run this command again.
 
     # Make sure the PATTOO_CONFIGDIR environment variable is set
     if 'PATTOO_CONFIGDIR' not in os.environ:
-        log.log2die_safe(21023, screen_message)
+        log.log2die_safe(20087, screen_message)
 
     # Make sure the PATTOO_CONFIGDIR environment variable is set correctly
     if os.environ['PATTOO_CONFIGDIR'] != config_directory:
-        log.log2die_safe(21024, screen_message)
+        log.log2die_safe(20088, screen_message)
 
     # Update message
     screen_message = ('''{}
@@ -192,4 +164,4 @@ PATTOO_CONFIGDIR is incorrectly set to {}
     if 'unittest' not in os.environ['PATTOO_CONFIGDIR']:
         log_message = (
             'The PATTOO_CONFIGDIR is not set to a unittest directory')
-        log.log2die_safe(21025, log_message)
+        log.log2die_safe(20089, log_message)

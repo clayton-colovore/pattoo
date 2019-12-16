@@ -24,8 +24,12 @@ directory. Please fix.''')
 from tests.libraries.configuration import UnittestConfig
 
 from pattoo_shared.constants import PATTOO_API_SITE_PREFIX
-from pattoo.constants import PATTOO_API_WEB_EXECUTABLE
+from pattoo.constants import PATTOO_API_WEB_NAME
 from pattoo.constants import PATTOO_API_WEB_PROXY
+from pattoo.constants import PATTOO_API_AGENT_NAME
+from pattoo.constants import PATTOO_API_AGENT_PROXY
+from pattoo.constants import PATTOO_INGESTERD_NAME
+from pattoo.constants import PATTOO_INGESTER_SCRIPT
 
 
 class TestConstants(unittest.TestCase):
@@ -39,10 +43,19 @@ class TestConstants(unittest.TestCase):
         """Testing constants."""
         # Test pattoo API constants
         self.assertEqual(
-            PATTOO_API_WEB_EXECUTABLE, 'pattoo-apid')
+            PATTOO_API_WEB_NAME, 'pattoo_apid')
         self.assertEqual(
             PATTOO_API_WEB_PROXY,
-            '{}-gunicorn'.format(PATTOO_API_WEB_EXECUTABLE))
+            '{}-gunicorn'.format(PATTOO_API_WEB_NAME))
+        self.assertEqual(
+            PATTOO_API_AGENT_NAME, 'pattoo_api_agentd')
+        self.assertEqual(
+            PATTOO_API_AGENT_PROXY,
+            '{}-gunicorn'.format(PATTOO_API_AGENT_NAME))
+        self.assertEqual(
+            PATTOO_INGESTERD_NAME, 'pattoo_ingesterd')
+        self.assertEqual(
+            PATTOO_INGESTER_SCRIPT, 'pattoo_ingester.py')
 
 
 if __name__ == '__main__':
